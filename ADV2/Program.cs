@@ -105,10 +105,10 @@ internal class Program
     #endregion
 
 
-    #region Task01
+    #region Task 1 Search
 
 
-    static List<Product> SearchProducts(List<Product> products, Func<Product, bool> filter)
+    static List<Product> SearchProducts(List<Product> products, Func<Product, bool> filter) // We used Func bec we need to return true/false
     {
         List<Product> Result = new();
         foreach (Product product in products)
@@ -123,9 +123,9 @@ internal class Program
 
     #endregion
 
-    #region Task 2.1
+    #region Task 2.1 Print
 
-    public static void PrintReport(List<Product> products, Action<Product> action)
+    public static void PrintReport(List<Product> products, Action<Product> action) // We used Action bec we need to return nothing.
     {
         foreach (Product product in products)
         {
@@ -136,11 +136,45 @@ internal class Program
 
     #endregion
 
+    #region Task 2.2
 
+    public static List<string> TransformProducts(List<Product> products, Func<Product, string> transform)
+    {
+        List<string> Result = new();
+
+        foreach (Product product in products)
+        {
+            Result.Add(transform(product));
+        }
+
+        return Result;
+    }
+
+
+
+    #endregion
+
+    #region Task 2.3
+
+    public static List<Product> FilterProducts(List<Product> products, Predicate<Product> filter)
+    {
+        List<Product> Result = new();
+
+        foreach (Product product in products)
+        {
+            if (filter(product))
+            {
+                Result.Add(product);
+            }
+        }
+        return Result;
+    }
+
+    #endregion
 
     static void Main(string[] args)
     {
-        #region Task01
+        #region Task 1
 
         var Electronics = SearchProducts(catalog, p => p.Category == "Electronics");
         Helper.PrintList("-- Electronics --\n", Electronics);
@@ -172,5 +206,33 @@ internal class Program
 
         #endregion
 
+
+        #region Task 2.2
+
+        var summary = TransformProducts(catalog, p => $"{p.Name} (${p.Price})");
+
+        Console.WriteLine("\n-- Summary List --\n");
+
+        foreach (var item in summary)
+        {
+            Console.WriteLine(item);
+        }
+
+        var summary2 = TransformProducts(catalog, p => $"{p.Name}: {(p.Price > 100 ? "Expensive!" : "Affordable!")}");
+
+        Console.WriteLine("\n-- Price Labels --\n");
+
+        foreach (var item in summary2)
+        {
+            Console.WriteLine(item);
+        }
+        #endregion
+
+        #region Task 2.3
+
+        var lowStock = FilterProducts(catalog, p => p.Stock < 20);
+
+        Helper.PrintList2(lowStock);
+        #endregion
     }
 }

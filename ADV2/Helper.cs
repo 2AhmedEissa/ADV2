@@ -16,5 +16,15 @@ namespace ADV2
             }
         }
 
+
+        public static void PrintList2(List<Product> products)
+        {
+            Console.WriteLine("\n--- Low-Stock ALert ---\n");
+            foreach (Product product in products)
+            {
+                Console.WriteLine($"[LOW STOCK] {product.Name}: only {product.Stock} left!");
+            }
+        }
+
     }
 }
